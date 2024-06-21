@@ -125,286 +125,116 @@ CREATE TABLE Manutencao (
   , FOREIGN KEY (idEqui) REFERENCES Equipamento(idEqui)
 );
 
+-- Inserir informações aos Funcionários --
+INSERT INTO Funcionario (NomeFun, IdadeFun, Funcao, TipoContrato, ContatoFun, MontagemTreino) VALUES
+('Carlos Silva', 34, 'Instrutor', 'CLT', '1234-5678', 'Treino de hipertrofia para iniciantes.'),
+('Ana Souza', 28, 'Recepcionista', 'CLT', '2345-6789', 'N/A'),
+('Marcos Oliveira', 45, 'Personal Trainer', 'PJ', '3456-7890', 'Treino funcional avançado.'),
+('Beatriz Santos', 32, 'Nutricionista', 'PJ', '4567-8901', 'Elaboração de planos nutricionais.'),
+('Juliana Almeida', 29, 'Coordenadora', 'CLT', '5678-9012', 'Supervisão geral e ajustes de treinos.');
 
--- Inserir informações funcionarios --
-INSERT INTO
-  Funcionario (
-    NomeFun
-    , IdadeFun
-    , Funcao
-    , TipoContrato
-    , ContatoFun
-    , MontagemTreino
-  )
-VALUES
-  (
-    'Carlos Silva'
-    , 34
-    , 'Instrutor'
-    , 'CLT'
-    , '1234-5678'
-    , 'Treino de hipertrofia para iniciantes.'
-  )
-  , (
-    'Ana Souza'
-    , 28
-    , 'Recepcionista'
-    , 'CLT'
-    , '2345-6789'
-    , 'N/A'
-  )
-  , (
-    'Marcos Oliveira'
-    , 45
-    , 'Personal Trainer'
-    , 'PJ'
-    , '3456-7890'
-    , 'Treino funcional avançado.'
-  )
-  , (
-    'Beatriz Santos'
-    , 32
-    , 'Nutricionista'
-    , 'PJ'
-    , '4567-8901'
-    , 'Elaboração de planos nutricionais.'
-  )
-  , (
-    'Juliana Almeida'
-    , 29
-    , 'Coordenadora'
-    , 'CLT'
-    , '5678-9012'
-    , 'Supervisão geral e ajustes de treinos.'
-  );
+-- Inserir informações aos Benefícios --
+INSERT INTO Beneficio (Tipo) VALUES
+('Vale Transporte'),
+('Plano de Saúde'),
+('Vale Refeição'),
+('Seguro de Vida'),
+('Auxílio Educação');
 
--- Inserir informações Benefícios --
-INSERT INTO
-  Beneficio (Tipo)
-VALUES
-  ('Vale Transporte')
-  , ('Plano de Saúde')
-  , ('Vale Refeição')
-  , ('Seguro de Vida')
-  , ('Auxílio Educação');
 
--- Inserir informações Benefícios dos funcionários --
-INSERT INTO
-  BeneficioFunc (idBen, idFun)
-VALUES
-  (1, 1)
-  , (2, 1)
-  , (3, 2)
-  , (4, 3)
-  , (5, 4)
-  , (1, 5);
+-- Inserir informações aos Benefícios dos Funcionários --
+INSERT INTO BeneficioFunc (idBen, idFun)
+VALUES 
+(1, 1),
+(2, 1),
+(3, 2),
+(4, 3),
+(5, 4),
+(1, 5);
 
--- Inserir informações Parceiros --
-INSERT INTO
-  Parceiro (NomeEmpresa, TipoParceria, TipDescParceria)
-VALUES
-  ('gymEquipment', 'Equipamento', 'Desconto de 15%')
-  , ('FitFood', 'Alimentação', 'Desconto de 20%')
-  , ('SportLife', 'Roupas', 'Desconto de 10%')
-  , ('HealthyLiving', 'Suplementos', 'Desconto de 25%')
-  , ('GymPartner', 'Serviços', 'Desconto de 30%');
+-- Inserir informações aos Parceiros --
+INSERT INTO Parceiro (NomeEmpresa, TipoParceria, TipDescParceria)
+VALUES 
+('gymEquipment', 'Equipamento', 'Desconto de 15%'),
+('FitFood', 'Alimentação', 'Desconto de 20%'),
+('SportLife', 'Roupas', 'Desconto de 10%'),
+('HealthyLiving', 'Suplementos', 'Desconto de 25%'),
+('GymPartner', 'Serviços', 'Desconto de 30%');
 
--- Inserir informações Alunos --
-INSERT INTO
-  Aluno (idParceiro, NomeAluno, IdadeAluno, ContatoAluno)
-VALUES
-  (1, 'Roberto Carlos', 85, '111111111')
-  , (2, 'Fernanda Costa', 30, '222222222')
-  , (3, 'Ricardo Pereira', 27, '333333333')
-  , (4, 'Amanda Ferreira', 25, '444444444')
-  , (5, 'Lucas Martins', 28, '555555555');
+-- Inserir  informações aos Alunos --
+INSERT INTO Aluno (idParceiro, NomeAluno, IdadeAluno, ContatoAluno)
+VALUES 
+(1, 'Roberto Carlos', 85, '111111111'),
+(2, 'Fernanda Costa', 30, '222222222'),
+(3, 'Ricardo Pereira', 27, '333333333'),
+(4, 'Amanda Ferreira', 25, '444444444'),
+(5, 'Lucas Martins', 28, '555555555');
 
--- Inserir informações Endereços --
-INSERT INTO
-  Endereco (
-    Rua
-    , Numero
-    , CEP
-    , idFun
-    , idAluno
-    , Bairro
-    , Cidade
-    , Estado
-  )
-VALUES
-  (
-    'Rua ABC'
-    , 100
-    , '12345-678'
-    , 1
-    , 1
-    , 'Centro'
-    , 'São Paulo'
-    , 'SP'
-  )
-  , (
-    'Rua BCD'
-    , 200
-    , '23456-789'
-    , 2
-    , 2
-    , 'Jardim'
-    , 'Rio de Janeiro'
-    , 'RJ'
-  )
-  , (
-    'Rua CDE'
-    , 300
-    , '34567-890'
-    , 3
-    , 3
-    , 'Vila'
-    , 'Belo Horizonte'
-    , 'MG'
-  )
-  , (
-    'Rua DEF'
-    , 400
-    , '45678-901'
-    , 4
-    , 4
-    , 'Zona Sul'
-    , 'Curitiba'
-    , 'PR'
-  )
-  , (
-    'Rua EFG'
-    , 500
-    , '56789-012'
-    , 5
-    , 5
-    , 'Zona Norte'
-    , 'Porto Alegre'
-    , 'RS'
-  );
+-- Inserir informações aos Endereços --
+INSERT INTO Endereco (Rua, Numero, CEP, idFun, idAluno, Bairro, Cidade, Estado)
+VALUES 
+('Rua ABC', 100, '12345-678', 1, 1, 'Centro', 'São Paulo', 'SP'),
+('Rua BCD', 200, '23456-789', 2, 2, 'Jardim', 'Rio de Janeiro', 'RJ'),
+('Rua CDE', 300, '34567-890', 3, 3, 'Vila', 'Belo Horizonte', 'MG'),
+('Rua DEF', 400, '45678-901', 4, 4, 'Zona Sul', 'Curitiba', 'PR'),
+('Rua EFG', 500, '56789-012', 5, 5, 'Zona Norte', 'Porto Alegre', 'RS');
 
--- Inserir informações Pagamentos --
-INSERT INTO
-  Pagamento (idAluno, DataPagamento, PlanoContratado, Valor)
-VALUES
-  (1, '2024-01-15', 'Mensal', 150.00)
-  , (2, '2024-02-10', 'Trimestral', 400.00)
-  , (3, '2024-03-05', 'Mensal', 150.00)
-  , (4, '2024-04-20', 'Semestral', 750.00)
-  , (5, '2024-05-25', 'Mensal', 150.00);
+-- Inserir informações dos Pagamentos --
+INSERT INTO Pagamento (idAluno, DataPagamento, PlanoContratado, Valor)
+VALUES 
+(1, '2024-01-15', 'Mensal', 150.00),
+(2, '2024-02-10', 'Trimestral', 400.00),
+(3, '2024-03-05', 'Mensal', 150.00),
+(4, '2024-04-20', 'Semestral', 750.00),
+(5, '2024-05-25', 'Mensal', 150.00);
 
--- Inserir informações Ficha de cadastros --
-INSERT INTO
-  FichadeCadastro (idAluno, DataCadastro, Anamnese, FichaMedica)
-VALUES
-  (
-    1
-    , '2024-01-01'
-    , 'Histórico de lesões no joelho.'
-    , 'Sem problemas cardíacos.'
-  )
-  , (
-    2
-    , '2024-02-01'
-    , 'Alergia a lactose.'
-    , 'Histórico de pressão alta.'
-  )
-  , (
-    3
-    , '2024-03-01'
-    , 'Diabetes controlada.'
-    , 'Histórico de colesterol alto.'
-  )
-  , (
-    4
-    , '2024-04-01'
-    , 'Problemas respiratórios.'
-    , 'Histórico de asma.'
-  )
-  , (
-    5
-    , '2024-05-01'
-    , 'Hérnia de disco.'
-    , 'Histórico de problemas na coluna.'
-  );
+-- Inserir informações das Fichas de Cadastros --
+INSERT INTO FichadeCadastro (idAluno, DataCadastro, Anamnese, FichaMedica)
+VALUES 
+(1, '2024-01-01', 'Histórico de lesões no joelho.', 'Sem problemas cardíacos.'),
+(2, '2024-02-01', 'Alergia a lactose.', 'Histórico de pressão alta.'),
+(3, '2024-03-01', 'Diabetes controlada.', 'Histórico de colesterol alto.'),
+(4, '2024-04-01', 'Problemas respiratórios.', 'Histórico de asma.'),
+(5, '2024-05-01', 'Hérnia de disco.', 'Histórico de problemas na coluna.');
 
--- Inserir informações Treinos --
-INSERT INTO
-  Treino (
-    idAluno
-    , FichaTreino
-    , DataInicio
-    , DataFim
-    , ObjetivoTreino
-  )
-VALUES
-  (
-    1
-    , 'Treino A'
-    , '2024-01-05'
-    , '2024-03-05'
-    , 'Ganhar massa muscular.'
-  )
-  , (
-    2
-    , 'Treino B'
-    , '2024-02-10'
-    , '2024-04-10'
-    , 'Perder peso.'
-  )
-  , (
-    3
-    , 'Treino C'
-    , '2024-03-15'
-    , '2024-05-15'
-    , 'Melhorar resistência cardiovascular.'
-  )
-  , (
-    4
-    , 'Treino D'
-    , '2024-04-20'
-    , '2024-06-20'
-    , 'Fortalecer membros inferiores.'
-  )
-  , (
-    5
-    , 'Treino E'
-    , '2024-05-25'
-    , '2024-07-25'
-    , 'Aumentar flexibilidade.'
-  );
+-- Inserir informações aos Treinos --
+INSERT INTO Treino (idAluno, FichaTreino, DataInicio, DataFim, ObjetivoTreino)
+VALUES 
+(1, 'Treino A', '2024-01-05', '2024-03-05', 'Ganhar massa muscular.'),
+(2, 'Treino B', '2024-02-10', '2024-04-10', 'Perder peso.'),
+(3, 'Treino C', '2024-03-15', '2024-05-15', 'Melhorar resistência cardiovascular.'),
+(4, 'Treino D', '2024-04-20', '2024-06-20', 'Fortalecer membros inferiores.'),
+(5, 'Treino E', '2024-05-25', '2024-07-25', 'Aumentar flexibilidade.');
 
--- Inserir informações Equipamentos --
-INSERT INTO
-  Equipamento (NomeEqui)
-VALUES
-  ('Esteira')
-  , ('Bicicleta Ergométrica')
-  , ('Halteres')
-  , ('Barra de Supino')
-  , ('Máquina de Leg Press');
+-- Inserir informações aos Equipamentos --
+INSERT INTO Equipamento (NomeEqui)
+VALUES 
+('Esteira'),
+('Bicicleta Ergométrica'),
+('Halteres'),
+('Barra de Supino'),
+('Máquina de Leg Press');
 
--- Inserir informações Equipamentos de treinos --
-INSERT INTO
-  EquiTreino (idFicha, idEqui)
-VALUES
-  (1, 1)
-  , (1, 3)
-  , (2, 2)
-  , (2, 4)
-  , (3, 5)
-  , (3, 1)
-  , (4, 3)
-  , (4, 5)
-  , (5, 2)
-  , (5, 4);
+-- Inserir infrormações aos Equipamentos de Treinos --
+INSERT INTO EquiTreino (idFicha, idEqui)
+VALUES 
+(1, 1),
+(1, 3),
+(2, 2),
+(2, 4),
+(3, 5),
+(3, 1),
+(4, 3),
+(4, 5),
+(5, 2),
+(5, 4);
 
--- Inserir informações Munutenção --
-INSERT INTO
-  Manutencao (idFun, idEqui, dataManu)
-VALUES
-  (1, 1, '2024-06-01')
-  , (2, 2, '2024-06-15')
-  , (3, 3, '2024-07-01')
-  , (4, 4, '2024-07-15')
-  , (5, 5, '2024-08-01');
+-- Inserir informações de Manutenção --
+INSERT INTO Manutencao (idFun, idEqui, dataManu)
+VALUES 
+(1, 1, '2024-06-01'),
+(2, 2, '2024-06-15'),
+(3, 3, '2024-07-01'),
+(4, 4, '2024-07-15'),
+(5, 5, '2024-08-01');
+
