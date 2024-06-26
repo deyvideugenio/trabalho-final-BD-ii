@@ -858,3 +858,92 @@ FROM
     beneficio AS b ON b.idBen = bf.idBen
 GROUP BY nomeFun
 ORDER BY nomeFun;
+
+-- Verificando a tabela aluno --
+SELECT * FROM aluno;
+
+-- Criando uma Trigger para criação de email para alunos --
+-- Vamos criar uma script para atualizar os dados existentes --
+
+UPDATE Aluno
+SET email = CONCAT(
+    LOWER(
+        REPLACE(
+            REPLACE(
+                REPLACE(
+                    REPLACE(
+                        REPLACE(
+                            REPLACE(
+                                REPLACE(NomeAluno, ' ', ''),
+                                'á', 'a'
+                            ),
+                            'é', 'e'
+                        ),
+                        'í', 'i'
+                    ),
+                    'ê', 'e'
+                ),
+                'õ', 'o'
+            ),
+            'ã', 'a'
+        )
+    ),
+    '@ironwork.com'
+)
+WHERE idAluno > 0;
+
+SELECT * FROM aluno;
+
+
+DELIMITER //
+
+CREATE TRIGGER gerarEmail
+BEFORE INSERT ON Aluno
+FOR EACH ROW
+BEGIN
+    DECLARE nome_aluno VARCHAR(60);
+    DECLARE email_aluno VARCHAR(100);
+
+    -- Obtém o nome do aluno a partir da nova inserção e formata
+    SET nome_aluno = NEW.NomeAluno;
+
+    -- Gera o email com o domínio @ironwork.com
+    SET email_aluno = CONCAT(
+        LOWER(
+            REPLACE(
+                REPLACE(
+                    REPLACE(
+                        REPLACE(
+                            REPLACE(
+                                REPLACE(
+                                    REPLACE(nome_aluno, ' ', ''),
+                                    'á', 'a'
+                                ),
+                                'é', 'e'
+                            ),
+                            'í', 'i'
+                        ),
+                        'ê', 'e'
+                    ),
+                    'õ', 'o'
+                ),
+                'ã', 'a'
+            )
+        ),
+        '@ironwork.com'
+    );
+
+    -- Insere o email gerado na nova linha a ser inserida
+    SET NEW.email = email_aluno;
+END //
+
+DELIMITER ;
+
+
+
+INSERT INTO Aluno (IdParceiro, NomeAluno, IdadeAluno, ContatoAluno)
+VALUES 
+(1, 'João Paulo', 30, '(35) 9111111111');
+
+
+SELECT * FROM aluno;
