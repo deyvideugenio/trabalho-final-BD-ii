@@ -122,6 +122,8 @@ CREATE TABLE Manutencao (
   , FOREIGN KEY (idEqui) REFERENCES Equipamento(idEqui)
 );
 
+-- Realizando a consulta nas tabelas criadas, para verificar a construção! --
+
 SELECT * FROM Funcionario;
 SELECT * FROM Beneficio;
 SELECT * FROM BeneficioFunc;
