@@ -951,7 +951,6 @@ END //
 
 DELIMITER ;
 
-
 -- Testando o trigger gerarEmail
 INSERT INTO Aluno (IdParceiro, NomeAluno, IdadeAluno, ContatoAluno)
 VALUES 
