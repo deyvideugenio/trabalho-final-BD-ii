@@ -1,5 +1,5 @@
 -- ############## Trabalho Final de Banco de Dados 2 ################# --
-DROP DATABASE academiaironwork;
+
 -- 1ª parte: Criação do Banco de Dados --
 CREATE DATABASE AcademiaIronWork;
 
