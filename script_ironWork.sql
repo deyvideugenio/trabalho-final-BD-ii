@@ -1,11 +1,12 @@
 -- ############## Trabalho Final de Banco de Dados 2 ################# --
-
+DROP DATABASE academiaironwork;
 -- 1ª parte: Criação do Banco de Dados --
 CREATE DATABASE AcademiaIronWork;
 
 USE AcademiaIronWork;
 
--- Criando as tabelas do nosso Banco de Dados da Academia Iron Work --
+-- INÍCIO DA PARTE DE CRIAÇÃO DE TABELAS
+
 -- Tabela Funcionário sendo criada --
 CREATE TABLE Funcionario (
   idFun INT AUTO_INCREMENT PRIMARY KEY
@@ -122,6 +123,8 @@ CREATE TABLE Manutencao (
   , FOREIGN KEY (idEqui) REFERENCES Equipamento(idEqui)
 );
 
+-- Realizando a consulta nas tabelas criadas, para verificar a construção! --
+
 SELECT * FROM Funcionario;
 SELECT * FROM Beneficio;
 SELECT * FROM BeneficioFunc;
@@ -135,7 +138,12 @@ SELECT * FROM Equipamento;
 SELECT * FROM EquiTreino;
 SELECT * FROM Manutencao;
 
--- INÍCIO DA INSERÇÃO DE DADOS --
+-- FIM DA PARTE DA CRIAÇÃO DE TABELAS
+
+
+
+-- INÍCIO DA INSERÇÃO DE DADOS NAS TABELAS
+
 -- Inserindo informações à tabela Funcionário --
 INSERT INTO Funcionario (NomeFun, IdadeFun, Funcao, TipoContrato, ContatoFun, TipoTreino) VALUES
 ('Pedro Costa', 42, 'Proprietário', 'PJ', '0123-4567', 'Emagrecimento'),
@@ -413,6 +421,8 @@ VALUES
 
 SELECT * FROM Manutencao;
 
+-- FIM DA PARTE DE INSERÇÃO DE DADOS NAS TABELAS
+
 
 
 -- INÍCIO DA PARTE DE MANIPULAÇÃO DAS TABELAS E DADOS
@@ -435,6 +445,8 @@ SET Desconto = CASE Desconto
   ELSE Desconto
 END
 WHERE idParceiro IN (1, 2, 3, 4, 5);
+
+SELECT * FROM Parceiro;
 
 -- O código abaixo altera o tipo de dado da coluna Desconto para INT
 ALTER TABLE Parceiro
@@ -526,8 +538,16 @@ SELECT COUNT(*) FROM Pagamento WHERE planoContratado = 'Mensal';
 SELECT COUNT(*) AS 'Manutenções em 2022' FROM MANUTENCAO WHERE dataManu LIKE '2022%';
 
 
--- Consulta simples: cadastro mais recente
+-- Consulta simples utilizando group by: cadastro mais recente
 SELECT MAX(dataCadastro) AS 'Cadastro mais recente' FROM fichadecadastro;
+
+-- Consulta simples: planos mais usados
+SELECT 
+    planoContratado AS Plano,
+    COUNT(planoContratado) AS Quantidade
+FROM
+    Pagamento
+GROUP BY planoContratado;
 
 
 -- Consulta simples utilizando subconsulta: parceiro que oferece o menor desconto dentre os parceiros
@@ -567,7 +587,7 @@ WHERE
         AND e.idFun IS NOT NULL;
 
 
--- Consulta complexa: nome dos alunos que fazem treino de emagrecimento e treino funcional, ordeados pelo objetivo do treino
+-- Consulta complexa: nome dos alunos que fazem treino de emagrecimento ou treino funcional, ordenados pelo objetivo do treino
 SELECT 
     a.nomeAluno, t.objetivoTreino
 FROM
@@ -701,15 +721,6 @@ FROM
 GROUP BY a.idAluno , t.objetivoTreino;
 
     
--- Consulta complexa: planos mais usados
-SELECT 
-    planoContratado AS Plano,
-    COUNT(planoContratado) AS Quantidade
-FROM
-    Pagamento
-GROUP BY planoContratado;
-
-
 -- Consulta complexa: equipamento mais usado na academia
 SELECT 
     et.idEqui,
@@ -728,15 +739,15 @@ ORDER BY Total_Utilizacoes DESC
 LIMIT 1;
 
 
--- Consulta complexa: nome do instrutor, sua função, nome do aluno, tipo de treino associado ao aluno, equipamentos usados no treino e o objetivo do treino
+-- Consulta complexa: nome do instrutor, sua função, nome do aluno, tipo de treino associado ao aluno, o objetivo do treino e equipamentos usados no treino
 SELECT 
     f.NomeFun,
     f.Funcao,
     a.NomeAluno,
     t.FichaTreino,
+    t.objetivoTreino,
     GROUP_CONCAT(e.nomeEquip
-        SEPARATOR ', ') AS 'Equipamento',
-    t.objetivoTreino
+        SEPARATOR ', ') AS 'Equipamento'
 FROM
     Funcionario f
         INNER JOIN
@@ -756,7 +767,7 @@ GROUP BY f.nomeFun , f.funcao , a.nomeAluno , t.fichaTreino, t.objetivoTreino;
 -- INÍCIO DAS VIEWS
 
 -- View de consulta complexa: nomes e contatos dos alunos cujo plano contratado seja mensal e a data do pagamento seja anterior a '2024-06-10'
-CREATE VIEW view_nomeAluno_contato_planomensal_pg20240610 AS
+CREATE VIEW view_nomeAluno_contato_planoMensal_pg20240610 AS
     SELECT 
         a.nomeAluno,
         a.contatoAluno,
@@ -770,8 +781,8 @@ CREATE VIEW view_nomeAluno_contato_planomensal_pg20240610 AS
         p.planoContratado = 'Mensal'
             AND dataPagamento < '2024-06-10';
 
--- Testando view_nome_contato_planomensal_pg20240610:
-SELECT * FROM view_nome_contato_planomensal_pg20240610;
+-- Testando view_nomeAluno_contato_planoMensal_pg20240610:
+SELECT * FROM view_nomeAluno_contato_planoMensal_pg20240610;
 
 
 -- View de consulta complexa: nome do aluno, objetivo do treino e equipamentos usados no treino (exibidos na mesma linha), agrupada por aluno e objetivo do treino
@@ -792,8 +803,8 @@ CREATE VIEW view_nomeAluno_objetivotreino_equip AS
         Equipamento AS e ON e.idEqui = et.idEqui
     GROUP BY a.idAluno , t.objetivoTreino;
 
--- Testando view_nome_objetivotreino_equip
-SELECT * FROM view_nome_objetivotreino_equip;
+-- Testando view_nomeAluno_objetivotreino_equip
+SELECT * FROM view_nomeAluno_objetivotreino_equip;
 
 -- View de consulta complexa: nome do instrutor, sua função, nome do aluno, tipo de treino associado ao aluno, equipamentos usados no treino e o objetivo do treino
 CREATE VIEW view_nomeInstrutor_funcao_nomeAluno_treino_equip_objetivo AS
@@ -839,11 +850,11 @@ END;
 DELIMITER ;
 
 -- Testando trigger 'adicionarBeneficiosPadrao'
-SELECT * FROM FUNCIONARIO;
 INSERT INTO Funcionario (NomeFun, Funcao, Turno, TipoContrato, ContatoFun, TipoTreino) VALUES
 ('Lucas Oliveira', 'Instrutor', 'Tarde', 'CLT', '1122-3344', 'Emagrecimento'),
 ('William Lopes', 'Instrutor', 'Manhã', 'CLT', '5566-7788', 'Hipertrofia');
 
+-- Consulta que mostra o benefício de cada funcionário (note que Lucas Oliveira e William Lopes foram inseridos com os benefícios padrão)
 SELECT 
     f.nomeFun,
     GROUP_CONCAT(b.tipo
@@ -856,3 +867,96 @@ FROM
     beneficio AS b ON b.idBen = bf.idBen
 GROUP BY nomeFun
 ORDER BY nomeFun;
+
+-- Verificando a tabela aluno --
+SELECT * FROM aluno;
+
+
+-- Trigger para criação de email para alunos
+-- Primeiro vamos criar os emails para os alunos já existentes
+
+UPDATE Aluno
+SET email = CONCAT(
+    LOWER(
+        REPLACE(
+            REPLACE(
+                REPLACE(
+                    REPLACE(
+                        REPLACE(
+                            REPLACE(
+                                REPLACE(NomeAluno, ' ', ''),
+                                'á', 'a'
+                            ),
+                            'é', 'e'
+                        ),
+                        'í', 'i'
+                    ),
+                    'ê', 'e'
+                ),
+                'õ', 'o'
+            ),
+            'ã', 'a'
+        )
+    ),
+    '@ironwork.com'
+)
+WHERE idAluno > 0;
+
+-- Verificando os emails criados
+SELECT * FROM aluno;
+
+
+-- Criando o trigger que gera emails para os próximos alunos cadastrados
+DELIMITER //
+
+CREATE TRIGGER gerarEmail
+BEFORE INSERT ON Aluno
+FOR EACH ROW
+BEGIN
+    DECLARE nome_aluno VARCHAR(60);
+    DECLARE email_aluno VARCHAR(100);
+
+    -- Obtém o nome do aluno a partir da nova inserção e formata
+    SET nome_aluno = NEW.NomeAluno;
+
+    -- Gera o email com o domínio @ironwork.com
+    SET email_aluno = CONCAT(
+        LOWER(
+            REPLACE(
+                REPLACE(
+                    REPLACE(
+                        REPLACE(
+                            REPLACE(
+                                REPLACE(
+                                    REPLACE(nome_aluno, ' ', ''),
+                                    'á', 'a'
+                                ),
+                                'é', 'e'
+                            ),
+                            'í', 'i'
+                        ),
+                        'ê', 'e'
+                    ),
+                    'õ', 'o'
+                ),
+                'ã', 'a'
+            )
+        ),
+        '@ironwork.com'
+    );
+
+    -- Insere o email gerado na nova linha a ser inserida
+    SET NEW.email = email_aluno;
+END //
+
+DELIMITER ;
+
+
+-- Testando o trigger gerarEmail
+INSERT INTO Aluno (IdParceiro, NomeAluno, IdadeAluno, ContatoAluno)
+VALUES 
+(1, 'João Paulo', 30, '(35) 9111111111');
+
+
+-- Verificando se o trigger foi disparado corretamente
+SELECT * FROM aluno;
